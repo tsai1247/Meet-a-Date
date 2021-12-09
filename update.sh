@@ -2,4 +2,4 @@
 git stash
 git pull --rebase
 git stash pop
-python TelegramSavedMessageBot.py
+python Main.py

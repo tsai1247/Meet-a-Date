@@ -12,7 +12,9 @@ class STATUS(Enum):
     
 addList = {}    # {int : [Name, datetime, datetime]}
 
-currentPoll = {}    # {int : [buttons, beginDate, availableList]}
+currentPoll = {}    # {int : [buttons, dateTime, availableList]}
+
+currentPollInfo = {}
 
 def updateDict(name: Enum, userID: int, status: any):
     if status == None:
@@ -21,6 +23,8 @@ def updateDict(name: Enum, userID: int, status: any):
         elif name == DictName.addList:
             del addList[userID]
         elif name == DictName.currentPoll:
+            del addList[userID]
+        elif name == DictName.currentPollInfo:
             del addList[userID]
 
     elif name == DictName.userStatus:
@@ -32,8 +36,11 @@ def updateDict(name: Enum, userID: int, status: any):
         addList[userID].append(status)
     elif name == DictName.currentPoll:
         currentPoll.update({userID:status})
+    elif name == DictName.currentPollInfo:
+        currentPollInfo.update({userID:status})
 
 class DictName(Enum):
     userStatus = 1
     addList = 2
     currentPoll = 3
+    currentPollInfo = 4

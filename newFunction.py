@@ -1,7 +1,7 @@
 from typing import Literal
 import sqlite3
 
-def RunDB(databaseName: str, command: Literal, parameter: tuple):
+def RunDB(databaseName: str, command: Literal, parameter = None):
     sql = sqlite3.connect( databaseName )
     cur = sql.cursor()
     if parameter == None:

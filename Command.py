@@ -91,7 +91,9 @@ def callback(update, context):
                     RunDB('Database.db', command, (name, beginDate, endDate))
                     message = Send(update, "{0} 新增成功".format(name), chat_id=roomID)
                 elif state == STATUS.Polling:
-                    # 
+                    if date < currentPollInfo[userID][0] or date > currentPollInfo[userID][1]:
+                        userStatus[userID][1][1].edit_text(text = currentPoll[userID][1].split(" ")[0] + " (不可投票)")
+                        return
                     command = """ SELECT Available FROM Data WHERE UserID = ? and Name = ? and Date = ?"""
                     data = RunDB('Database.db', command, (userID, currentPoll[userID][3], date))
                     available = '222'
@@ -113,11 +115,12 @@ def callback(update, context):
                     )
     elif kind == "pollName":
         telegramcalendar.clearButton(query, context)
-        message = Send(update, "投票 {0}".format(text), reply_markup=telegramcalendar.create_calendar(), chat_id = userID)
-        
-        command = """ SELECT Name, BeginDate, EndDate FROM DateList WHERE Name = ?"""
-        data = RunDB('Database.db', command, (text))
+        command = """SELECT Name, BeginDate, EndDate FROM DateList WHERE Name = '{0}'""".format(text)
+        data = RunDB('Database.db', command)
         name, beginDate, endDate = data[0]
+        message = Send(update, "投票 {0} (From {1} To {2})".format(name, beginDate.split(" ")[0], endDate.split(" ")[0]), reply_markup=telegramcalendar.create_calendar(), chat_id = userID)
+        
+        updateDict(DictName.currentPollInfo, userID, [datetime.strptime(beginDate, "%Y-%m-%d %H:%M:%S"), datetime.strptime(endDate, "%Y-%m-%d %H:%M:%S")] )
 
         command = """ SELECT Available FROM Data WHERE UserID = ? and Name = ? and Date = ?"""
         data = RunDB('Database.db', command, (userID, text, beginDate))

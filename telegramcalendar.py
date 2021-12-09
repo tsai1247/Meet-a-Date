@@ -101,8 +101,10 @@ def process_calendar_selection(update,context, clear = True):
         # UNKNOWN
     return ret_data
 
-def clearDateButton(query, context):
-    context.bot.edit_message_text(text=query.message.text,
+def clearButton(query, context, replaceText = None):
+    if replaceText == None:
+        replaceText = query.message.text
+    context.bot.edit_message_text(text=replaceText,
                 chat_id=query.message.chat_id,
                 message_id=query.message.message_id
                 )

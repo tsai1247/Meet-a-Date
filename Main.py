@@ -25,7 +25,7 @@ def main():
     
     # 搜尋
     updater.dispatcher.add_handler(CommandHandler('result', result))
-    updater.dispatcher.add_handler(CommandHandler('list', list))
+    updater.dispatcher.add_handler(CommandHandler('poll', poll))
 
 
 # 其他類型回覆

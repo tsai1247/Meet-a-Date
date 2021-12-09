@@ -4,10 +4,13 @@ import sqlite3
 def RunDB(databaseName: str, command: Literal, parameter: tuple):
     sql = sqlite3.connect( databaseName )
     cur = sql.cursor()
-    cur.execute(command, parameter)
+    if parameter == None:
+        cur.execute(command)
+    else:
+        cur.execute(command, parameter)
     sql.commit()
     ret = None
-    if 'selece' in command:
+    if 'select' in command.lower():
         ret = cur.fetchall()
     cur.close()
     sql.close()
